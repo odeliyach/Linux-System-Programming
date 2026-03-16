@@ -1,12 +1,44 @@
 # Build artifacts
 *.o
 *.out
+*.a
 myshell
 queue_test
 System_Programming_Projects/shell/myshell
 System_Programming_Projects/queue/queue_test
 
-# OS / editor files
-.DS_Store
+# CMake build directory
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+Makefile
+*.cmake
+
+# Test and coverage output
+Testing/
+*.gcov
+*.gcda
+*.gcno
+coverage.html
+coverage.xml
+*.profraw
+*.profdata
+
+# IDE files
+.vscode/
+.idea/
 *.swp
 *~
+.DS_Store
+
+# Docker artifacts
+.dockerignore
+
+# Binary outputs
+*_test_runner
+*_benchmark
+queue_benchmark
