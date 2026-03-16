@@ -1,0 +1,315 @@
+OperatingSystems
+MiniShellAssignment
+Duedate(viamoodle):December14th,23:59
+Individualworkpolicy
+Theworkyousubmitinthiscourseisrequiredtobetheresultofyourindividualeffort
+only.Youmaydiscussconceptsandideaswithothers,butyoumustprogramindividually.
+Youshouldneverobserveanotherstudent’scode, fromthisorprevioussemesters.
+Studentsviolatingthispolicywill receiveacoursegradeof 250(“didnot completecourse
+requirements”).
+AIUsagePolicy
+AI tools(ChatGPT,Claude,Copilot, etc.)maybeusedfor learningconceptsand
+understandingsystemcalls,butthecoursematerial isyourprimaryresource.
+Youmustunderstandandbeabletoexplaineverylineofcodeyousubmit.Submittingcodeyou
+don’tunderstandviolatestheindividualworkpolicy.
+Requireddocumentation: IfyouuseAItools,addacommentattheendofyourmyshell.cfile
+withalinktoyourconversation(e.g.,//AIchat:https://...).
+1 Introduction
+Thegoalofthisassignment istogainexperiencewithprocessmanagement,pipes, signals,andthe
+relevantsystemcalls.Todothis,youwill implementasimpleshellprogram.Youwill implement
+thefunctionthatreceivesashellcommandandperformsit.Weprovideaskeletonshellprogram
+(shell.c),whichreads linesfromtheuser,parsesthemintocommands,andinvokesyourfunction.
+Youalsohavetoimplementanyinitialization/finalizationcodethatyourequire(moredetailsbelow).
+1.1 RequiredReadingandResources
+Beforeyoustartcoding,makesuretostudythefollowing:
+1. Signals:Readtheself_learning_signals.pdfmanualavailableonMoodle.Understanding
+signalhandlingisessential forthisassignment.
+2. Systemcalls:Learnaboutandusethefollowingsystemcalls:fork(),execvp()(nottobe
+confusedwithexecv()!), wait(), waitpid(), pipe(), dup2(), open(), close(), signal(),
+sigaction(),getpid().
+3. Signal-relatedconcepts:UnderstandSIGINT,SIGCHLD, signalhandlers,andthedifference
+betweensignal()andsigaction().
+1
+4. Bash behavior: In general, your shell will behave like the standard bash shell. However, there is
+an important exception: standard shells use a special OS mechanism that prevents SIGINT from
+being sent to background processes when the user presses Ctrl-C (read about setpgid() and
+this link if you’re curious). Your shell won’t use this mechanism, so the behavior of background
+processes receiving a SIGINT won’t be the same as in bash.
+5. Debugging: The strace program can be very useful for debugging. It provides a trace of all
+system calls executed by a process, including (optionally) by child processes that the traced
+process creates. Use it to understand what your shell is doing:
+strace-f ./shell
+1.2 The shell skeleton
+The skeleton we provide executes an infinite loop. Each iteration does the following:
+1. Reads a string containing a shell command from standard input. If Ctrl-D is pressed, the skeleton
+exits.
+2. Parses the command string into an array of words. A word is a non-empty sequence of non
+whitespace characters, where whitespace means space, tab (\t), or newline (\n). The end of the
+array is designated with a NULL entry.
+3. Invokes your function, passing it the parsed command line array. The skeleton detects and ignores
+empty lines (i.e., won’t invoke your function on an empty command).
+1.3 Shell functionality
+The shell will support the following operations, which are described in more detail in Section 2.2:
+1. Executing commands. The user enters a command, i.e., a program and its arguments, such as
+sleep 10. The shell executes the command and waits until it completes before accepting another
+command.
+2. Executing commands in the background. The user enters a command followed by &, for
+example: sleep 10 &. The shell executes the command but does not wait for its completion
+before accepting another command.
+3. Multiple piping. The user enters between 2 and 10 commands separated by pipe symbols
+(|), for example: ./prog1 | ./prog2 | ./prog3 | ... | ./prog10. This means there will
+be between 1 and 9 pipe symbols in a valid command. Each command may include its own
+arguments. The shell executes all commands concurrently, creating a pipeline where the standard
+output of each command is piped to the standard input of the next command in the sequence.
+The shell waits until all commands in the pipeline complete before accepting another command.
+4. Input redirecting. The user enters one command and input file name separated by the
+redirection symbol (<), for example: cat < file.txt. The shell executes the command so that
+its standard input is redirected from the input file (instead of the default, which is to the user’s
+terminal). The shell waits for the command to complete before accepting another command.
+5. Output redirecting. The user enters one command and output file name separated by the
+redirection symbol (>), for example: cat foo > file.txt. The shell executes the command so
+that the command’s standard output is redirected to the output file (instead of the default, which
+is to the user’s terminal). If the specified output file does not exist, it is created. If it exists, it is
+truncated. The shell waits for the command to complete before accepting another command.
+2
+The shell doesn’t need to support built-in commands such as cd and exit. It only support
+execution of program binaries as described above.
+ASSUMPTIONS. You can assume the following:
+1. If a command line contains the | symbol, then (1) it may appear multiple times and (2) each
+occurrence is correctly placed, i.e., at least one word appears before and after each pipe symbol,
+and each is separated by whitespace from them.
+2. If a command line contains the & symbol, then it appears last on the command line and is
+separated by whitespace. In other words, it is the last word of the command line.
+3. If a command line contains the < symbol, then it appears one before last on the command line
+and is separated by whitespace. In other words, the redirection operator and file name are the
+last two words on the command line.
+4. If a command line contains the > symbol, then it appears one before last on the command line
+and is separated by whitespace. In other words, the redirection operator and file name are the
+last two words on the command line.
+5. A command line will contain at most one type of special operation: either piping (one or more
+| symbols), background execution (&), input redirection (<), or output redirection (>). In other
+words, these features cannot be combined in a single command.
+6. Command lines will not contain quotation marks or apostrophes. (In normal shells, these are
+used to support arguments that contain whitespace. Your shell doesn’t need to support this
+feature.)
+2 Assignment description
+Implement the following functions in a file named myshell.c: prepare(), process_arglist(),
+and finalize(). The following details the specifications of these functions.
+2.1 int prepare(void)
+The skeleton calls this function before the first invocation of process_arglist(). This function
+returns 0 on success; any other return value indicates an error.
+You can use this function for any initialization and setup that you think are necessary for your
+process_arglist(). If you don’t need any initialization, just have this function return immediately;
+but you must provide it for the skeleton to compile.
+2.2 int process_arglist(int count, char **arglist)
+Input This function receives an array arglist with count non-NULL words. This array contains
+the parsed command line. The last entry in the array, arglist[count], is NULL. (So overall the
+array size is count+1.)
+3
+Behavior
+1. Commands specified in the arglist should be executed as a child process using fork() and
+execvp() (not execv()). Notice that if the arglist array contains a shell symbol (&, | < or >),
+the arglist should not be passed to execvp() as-is (more details below).
+2. Executing commands in the background:
+• If the last non-NULL word in arglist is "&" (a single ampersand), run the child process
+in the background. The parent should not wait for the child process to finish, but instead
+continue executing commands.
+• Donot pass the & argument to execvp().
+• Assume background processes don’t read input (stdin).
+• Donot use fork twice. Only use a single call to fork.
+3. Piping:
+• If arglist contains one or more instances of the word "|" (pipe symbol), run multiple
+child processes creating a pipeline, with the output (stdout) of each process piped to the
+input (stdin) of the next process in the sequence.
+• For each pipe in the command line, use the pipe() and dup2() system calls to connect the
+processes.
+• The shell should properly manage all file descriptors to avoid resource leaks and should wait
+for all processes in the pipeline to complete before accepting another command.
+• Use the same array for all execvp() calls by referencing items in arglist. There’s no need
+to allocate a new array and duplicate parts of the original array. You may change arglist
+itself if needed.
+4. Input redirection:
+• If arglist contains the word “<” (a single redirection symbol), open the specified file (that
+appears after the redirection symbol) and then run the child process, with the input (stdin)
+redirected from the input file.
+• To redirect the child process’ input, use the dup2() system call.
+• You should fork before opening the file.
+• For the open() call, use a mode of 0600 (S_IRUSR | S_IWUSR).
+5. Output redirection:
+• If arglist contains the word “>” (a single redirection symbol), open the specified file (that
+appears after the redirection symbol) and then run the child process, with the output
+(stdout) redirected to the output file.
+• For the open() call, use a mode of 0600 (S_IRUSR | S_IWUSR).
+• To redirect the child process’ output, use the dup2() system call.
+• You should fork before opening the file.
+6. Handling of SIGINT:
+4
+• Background on SIGINT (this bullet contains things you should know, not things you
+need to implement in the assignment): When the user presses Ctrl-C, a SIGINT signal is sent
+(by the OS) to the shell and all its child processes. The SIGINT signal can also be sent to a
+specific process using the kill() system call. (There’s also a kill program that invokes
+this system call, e.g., kill-INT <pid>.)
+• After prepare() finishes, the parent (shell) should not terminate upon SIGINT.
+• Foreground child processes (regular commands or parts of a pipe) should terminate upon
+SIGINT.
+• Background child processes should not terminate upon SIGINT.
+• NOTE: The program execvp()ed in a child process might change SIGINT handling. This
+is something the shell has no control over. Therefore, the above two bullets apply only to (1)
+the behavior before execvp() and (2) if the execvp()ed program doesn’t change SIGINT
+handling. Most programs don’t change the SIGINT handling they inherent, so these bullets
+apply to basically any program you are likely to test with (sleep, ls, cat, etc.).
+• IMPORTANT: To use some signal-related system calls, C11 code must have a certain
+macro defined. Be sure to use the compilation command line provided in Section 3 or your
+code might not compile.
+• You may only use the signal system call to set the signal disposition to SIG_IGN or
+to SIG_DFL. For any other use, particularly setting a signal handler, you must use the
+sigaction system call.
+7. Assume that the results of the provided parser are correct.
+8. You should prevent zombies and remove them as fast as possible.
+Output
+1. The process_arglist() function should not return until every foreground child process it
+created exits.
+2. In the original (shell/parent) process, process_arglist() should return 1 if no error occurs. (This
+makes sure the shell continues processing user commands.) If process_arglist() encounters an
+error, it should print an error message and return 0. (See below for what constitutes an error.)
+Error handling
+1. If an error occurs in the shell parent process, there’s no need to notify any running child processes.
+2. If an error occurs in a signal handler in the shell parent process, there’s no need to notify
+process_arglist(). Just print a proper error message and terminate the shell process with
+exit(1).
+3. If wait/waitpid in the shell parent process return an error for one of the following reasons, it is
+not considered an actual error that requires exiting the shell:
+• ECHILD
+• EINTR. (You can also avoid an EINTR “error” in the first place. Hint: read about the
+SA_RESTART option in sigaction.)
+Read the wait documentation to understand what these reasons mean.
+5
+4. If an error occurs in a child process (before it calls execvp()), print a proper error message and
+terminate only the child process using exit(1). Nothing should change for the parent or other
+child processes.
+5. User commands might be invalid (e.g., a non-existing program or redirecting to a file without
+write permission, more pipe commands than what the shell is supposed to support, etc). Such
+cases should be treated as an error in the child process (i.e., they must not terminate the shell).
+6. Error messages should be printed to stderr. (This applies to both parent and child processes.)
+7. Error message do not have to be worded exactly as in a real shell. Anything returned by
+strerror()or perror() is ok.
+8. There’s no requirement to exit “cleanly” on error. Processes may terminate without freeing
+memory.
+2.3 int finalize(void)
+The skeleton calls this function before exiting. This function returns 0 on success; any other return
+value indicates an error.
+You can use this function for any cleanups related to process_arglist() that you think are
+necessary. If you don’t need any cleanups, just have this function return immediately; but you
+must provide it for the skeleton to compile. Note that cleaning up the arglist array is not your
+responsibility. It is taken care of by the skeleton code.
+3 Submission instructions
+1. Submit just your myshell.c file. (Do not assume you can change the shell.c file!) Document
+your code with explanations for every non-trivial part of your code. Help the grader understand
+your solution and the flow of your code.
+2. The program must compile cleanly on the kilonova server (with no errors or warnings,
+you can find the manual for connecting to kilonova in moodle) when the following command is
+run in a directory containing the source code files:
+gcc-O3-D_POSIX_C_SOURCE=200809-Wall-std=c11 shell.c myshell.c
+3.1 Example Usage
+For example, compile the shell with:
+gcc-O3-D_POSIX_C_SOURCE=200809-Wall-std=c11 shell.c myshell.c-o shell
+Then, for the following commands:
+./shell
+echo Hello World > hello.txt
+cat hello.txt
+You should get the output:
+Hello World
+6
+
+
+OperatingSystems(0368216208)
+ConcurrentQueueAssignment
+Duedate(viamoodle):January12th,23:59
+Individualworkpolicy
+Theworkyousubmitinthiscourseisrequiredtobetheresultofyourindividualeffort
+only.Youmaydiscussconceptsandideaswithothers,butyoumustprogramindividually.
+Youshouldneverobserveanotherstudent’scode, fromthisorprevioussemesters.
+Studentsviolatingthispolicywill receiveacoursegradeof 250(“didnot completecourse
+requirements”).
+AIUsagePolicy
+AI tools(ChatGPT,Claude,Copilot, etc.)maybeusedfor learningconceptsand
+understandingsystemcalls,butthecoursematerial isyourprimaryresource.
+Youmustunderstandandbeabletoexplaineverylineofcodeyousubmit.Submittingcodeyou
+don’tunderstandviolatestheindividualworkpolicy.
+Requireddocumentation:IfyouuseAItools,addacommentattheendofyourqueue.cfile
+withalinktoyourconversation(e.g.,//AIchat:https://...).
+1 Introduction
+Thegoalofthisassignment istogainexperiencewiththreadsynchronization,conditionvariables,
+andthechallengesofconcurrentprogramming.
+Inthisassignment,youwill implementagenericconcurrentFIFOqueuethatsupportsenqueue
+anddequeueoperations.Concurrentqueuesare fundamentaldatastructures inmulti-threaded
+programs,usedinscenariossuchas:
+•Threadpoolswhereworkerthreadsfetchtasksfromasharedqueue
+•Producer-consumerpatternswheresomethreadsgenerateworkitemswhileothersprocessthem
+•Messagepassingbetweenthreadsinevent-drivensystems
+Yourqueuemusthandlemultiplethreadssafely,attemptingtoenqueueanddequeuesimulta
+neously,whileensuringfairness: threadswaitingfor itemsshouldreceivethemintheorderthey
+startedwaiting(FIFO).Your librarywillbecalledbymultiplethreadscreatedbyatestcode.You
+donotneedtocreatethreadsyourself—onlyensureyourqueueoperationsarethread-safe.
+1
+2 Assignment description
+Implement the following library in a file named queue.c. The following details the specification of
+the library.
+void initQueue(void);
+This function will be called before the queue is used. This is your chance to initialize your data
+structure.
+void destroyQueue(void);
+This function will be used for cleanup when the queue is no longer needed. It is possible for
+initQueue to be called afterwards.
+Adds an item to the queue.
+void enqueue(void*);
+void* dequeue(void);
+Remove an item from the queue. Will block if empty.
+size_t visited(void);
+Return the number of items that have passed inside the queue: return the total count of items
+that have been both enqueued and subsequently dequeued. This should not block due to concurrent
+operations, i.e., you may not take a lock at all.
+Thread interface: You must use C threads (threads.h), as described in the recitation. If you’ve
+heard of or know pthreads—you may not use them in this assignment.
+Error handling & termination:
+• You can assume malloc does not fail.
+• Noneed to check for errors in calls to mtx_* and cnd_* functions.
+Correctness requirements:
+• You may assume no calls will be made to the queue before initQueue or after destroyQueue
+(unless initQueue is called again).
+• You may assume that initQueue() will be called by a single thread before any concurrent queue
+operations begin. There is no need to make initQueue() itself thread-safe.
+• You may assume that destroyQueue() will run “solo.” In other words, assume that no other
+queue operations will be active in the time period between destroyQueue() being called and
+until it finishes. Specifically, you may assume:– No threads are currently executing enqueue() or dequeue()– No threads are blocked/sleeping in dequeue() waiting for items– The queue is empty when destroyQueue() is called
+2
+• The library should be thread-safe for enqueue(), dequeue(), and visited() operations. For
+example, an item added to the queue once should not be returned from two dequeue calls.
+• Make sure no resource deadlocks are possible in your program.
+• Threads should run in parallel. Only accesses to shared data should be synchronized with locks.
+• The queue must satisfy the following:
+1. Dequeue should be distributed to sleeping threads in FIFO order. If the queue is empty and
+there are k threads sleeping, then the next k items added to the queue should be handled by
+these threads according to the order in which they went to sleep (i.e., the first item added
+should be handled by the first thread that went to sleep, etc.). Specifically, if the queue is
+empty and there are k threads sleeping, inserting into the queue must make sure that the
+oldest sleeping thread will process the inserted item.
+2. A thread may put itself to sleep (to wait for an item) only if there are no items available for
+it when it arrives at the queue. (That is, if the queue is empty or if every item in the queue
+has to be handled by a different thread, due to the FIFO requirement.) If a thread goes to
+sleep after arriving at the queue, it should be woken up only once there is an item available
+for it to process (according to the FIFO requirement). A sleeping thread must not wake
+up only to go back to sleep again. (Assume that spurious wakeups are not possible.)
+• Forthe visited() function that return size_t and is not allowed to lock, it is OK if the returned
+number is not exact due to concurrent threads taking their place. If no concurrent actions take
+place the number should be exact. C11 undefined behavior is not allowed.
+3 Relevant functions & system calls
+1. Learn about and (possibly) use the following: thrd_create(), thrd_join(), cnd_init(),
+cnd_wait(), cnd_signal(), cnd_broadcast(), thrd_exit(), mtx_init()/lock()/trylock()/unlock().
+4 Submission instructions
+1. Submit just your queue.c file. Document your code with explanations for every non-trivial part
+of your code. Help the grader understand your solution and the flow of your code.
+2. The program must compile cleanly on the course virtual machine (no errors or warnings) when
+the following command is run in a directory containing the queue.c file:
+gcc-O3-D_POSIX_C_SOURCE=200809-Wall-std=c11-pthread-c queue.c
+3
