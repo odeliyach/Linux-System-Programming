@@ -131,11 +131,11 @@ int process_arglist(int count, char **arglist)
     if (cmd_count >= 2) {
         if (background) {
             fprintf(stderr, "Background execution is not supported with pipelines\n");
-            return 1;
+            return 0;
         }
         if (cmd_count > MAX_PIPE_CMDS) {
             fprintf(stderr, "Pipeline too long (max %d commands)\n", MAX_PIPE_CMDS);
-            return 1;
+            return 0;
         }
 
         int pipes[MAX_PIPE_CMDS - 1][2];

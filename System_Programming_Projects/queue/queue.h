@@ -10,7 +10,7 @@
 
 void initQueue(void);
 void destroyQueue(void);
-void enqueue(void *item);
+int enqueue(void *item);
 void *dequeue(void);
 size_t visited(void);
 

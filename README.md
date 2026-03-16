@@ -45,6 +45,6 @@ make test       # runs the queue producer/consumer harness
 
 | Scenario | Items | Elapsed (s) | Throughput (items/s) | Notes |
 | --- | ---: | ---: | ---: | --- |
-| Queue test harness (2 producers / 2 consumers) | 100 | 0.000355 | 281,797 | C11 threads, mutex + per-waiter condition variable |
+| Queue test harness (2 producers / 2 consumers) | 100 | 0.000311 | 321,261 | C11 threads, mutex + per-waiter condition variable |
 
 Metrics come from the included `queue_test` run on this repository snapshot (`make test`). Use them as a baseline; rerun on your hardware for updated numbers.

@@ -14,6 +14,7 @@ int finalize(void);
 
 static int parse_line(char *line, char ***out_args)
 {
+    *out_args = NULL;
     int capacity = 16;
     int count = 0;
     char **args = malloc((size_t)capacity * sizeof(char *));
@@ -28,6 +29,7 @@ static int parse_line(char *line, char ***out_args)
             char **tmp = realloc(args, (size_t)capacity * sizeof(char *));
             if (!tmp) {
                 free(args);
+                *out_args = NULL;
                 return -1;
             }
             args = tmp;
@@ -63,7 +65,11 @@ int main(void)
 
         char **args = NULL;
         int argc = parse_line(line, &args);
-        if (argc <= 0) {
+        if (argc < 0) {
+            fprintf(stderr, "Failed to parse command line (allocation error)\n");
+            continue;
+        }
+        if (argc == 0) {
             free(args);
             continue;
         }

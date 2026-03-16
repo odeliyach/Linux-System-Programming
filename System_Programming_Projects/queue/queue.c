@@ -44,8 +44,12 @@ void destroyQueue(void)
     mtx_destroy(&queue_lock);
 }
 
-/** Enqueue an item in a FIFO manner, waking a waiting consumer if present. */
-void enqueue(void *item)
+/**
+ * Enqueue an item in a FIFO manner, waking a waiting consumer if present.
+ *
+ * @return 0 on success, -1 if allocation fails.
+ */
+int enqueue(void *item)
 {
     mtx_lock(&queue_lock);
 
@@ -60,13 +64,14 @@ void enqueue(void *item)
         w->awakened = 1;
         cnd_signal(&w->cond);
         mtx_unlock(&queue_lock);
-        return;
+        return 0;
     }
 
     ItemNode *node = malloc(sizeof(ItemNode));
     if (!node) {
+        fprintf(stderr, "enqueue: allocation failed\n");
         mtx_unlock(&queue_lock);
-        return;
+        return -1;
     }
     node->data = item;
     node->next = NULL;
@@ -77,6 +82,7 @@ void enqueue(void *item)
         item_tail = node;
     }
     mtx_unlock(&queue_lock);
+    return 0;
 }
 
 /** Dequeue an item, blocking if the queue is empty. */

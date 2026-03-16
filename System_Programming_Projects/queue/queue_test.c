@@ -30,7 +30,10 @@ static int producer(void *arg)
             return -1;
         }
         *payload = args->id * 1000 + i;
-        enqueue(payload);
+        if (enqueue(payload) != 0) {
+            free(payload);
+            return -1;
+        }
     }
     return 0;
 }
