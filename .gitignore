@@ -1,0 +1,12 @@
+# Build artifacts
+*.o
+*.out
+myshell
+queue_test
+System_Programming_Projects/shell/myshell
+System_Programming_Projects/queue/queue_test
+
+# OS / editor files
+.DS_Store
+*.swp
+*~
