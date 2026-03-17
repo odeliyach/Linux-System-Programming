@@ -79,12 +79,14 @@ Linux-System-Programming/
 │   └── queue_test.c             # Producer-consumer benchmark
 ├── System_Programming_Projects/  # Legacy structure (maintained for compatibility)
 ├── docs/                         # Documentation
+│   ├── TECHNICAL_ANALYSIS.md    # Technical interview preparation
+│   ├── CV_FEEDBACK.md           # Technical recruiter analysis
+│   └── instructions_systems.txt # System programming instructions
 ├── .github/workflows/            # CI/CD pipeline
 │   └── ci.yml                   # Build and test automation
 ├── Makefile                      # Professional build system
 ├── Dockerfile                    # Production container
 ├── TESTING.md                    # Testing strategy and edge cases
-├── INTERVIEW_GUIDE.md            # Technical interview preparation
 └── README.md                     # This file
 ```
 
