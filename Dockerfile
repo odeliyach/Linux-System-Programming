@@ -19,13 +19,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /build
 
 # Copy source files
-COPY System_Programming_Projects/ System_Programming_Projects/
 COPY src/ src/
 COPY include/ include/
 COPY tests/ tests/
 COPY Makefile .
 
-# Build the project (supports both legacy and new structure)
+# Build the project
 RUN make clean && make all
 
 # Run tests during build to ensure correctness
@@ -46,9 +45,8 @@ RUN useradd -m -s /bin/bash sysuser
 
 WORKDIR /app
 
-# Copy only the built binaries (handles both structures)
-COPY --from=builder /build/bin/* /app/ 2>/dev/null || \
-    (cp /build/myshell /app/ && cp /build/queue_test /app/)
+# Copy the built binaries
+COPY --from=builder /build/bin/* /app/
 
 # Set ownership
 RUN chown -R sysuser:sysuser /app
