@@ -234,29 +234,6 @@ valgrind --tool=helgrind ./bin/queue_test
 
 ---
 
-## Interview Talking Points
-
-### Question: "How would you test this in production?"
-
-**Strong Answer**:
-1. **Add stress tests**: 10,000+ items, 50+ threads
-2. **Fuzz the shell**: Random command strings via `AFL` or `libFuzzer`
-3. **Monitor in prod**: Prometheus metrics for queue depth, latency
-4. **Chaos engineering**: Kill threads randomly, test recovery
-
-### Question: "What's missing from your test suite?"
-
-**Honest Answer**:
-- Bounded queue tests (capacity limits, backpressure)
-- Shell test automation (currently manual)
-- Negative tests for `destroyQueue()` during active use
-- Performance regression tracking (no historical baseline)
-
-### Key Message
-"I focused on the **3 highest-value tests** that prove thread safety, resource management, and performance—the fundamentals you can't compromise on. The rest is about knowing what trade-offs you're making."
-
----
-
 ## Running the Full Test Suite
 
 ```bash
