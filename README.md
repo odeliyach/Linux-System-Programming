@@ -20,7 +20,6 @@ This repository showcases **professional systems programming skills** through tw
 ✅ **Systems Programming** - POSIX signals, fork/exec/pipe, process groups, file descriptor handling
 ✅ **Performance Engineering** - Optimized synchronization patterns, throughput benchmarking
 ✅ **Production Readiness** - CI/CD pipeline, Docker containerization, comprehensive testing strategy
----
 
 ## 🚀 Quick Start
 
