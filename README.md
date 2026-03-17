@@ -235,7 +235,7 @@ valgrind --tool=helgrind ./bin/queue_test
 4. **Memory management** (ownership rules, Valgrind verification)
 5. **Performance trade-offs** (mutex vs. lock-free, batch operations)
 
-**See [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md)** for in-depth Q&A and behavioral interview strategies.
+**See [docs/TECHNICAL_ANALYSIS.md](docs/TECHNICAL_ANALYSIS.md)** for in-depth Q&A and behavioral interview strategies.
 
 ---
 
@@ -283,8 +283,9 @@ USER sysuser
 
 - **[README.md](README.md)** - This file (overview, quick start, architecture)
 - **[TESTING.md](TESTING.md)** - Edge cases, test strategy, debugging guide
-- **[INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md)** - Technical Q&A, elevator pitch, behavioral prep
-- **[CV_FEEDBACK.md](CV_FEEDBACK.md)** - Technical recruiter analysis (language recommendations)
+- **[docs/TECHNICAL_ANALYSIS.md](docs/TECHNICAL_ANALYSIS.md)** - Technical Q&A, elevator pitch, behavioral prep
+- **[docs/CV_FEEDBACK.md](docs/CV_FEEDBACK.md)** - Technical recruiter analysis (language recommendations)
+- **[docs/instructions_systems.txt](docs/instructions_systems.txt)** - System programming instructions and guidelines
 
 All source files include Doxygen-style comments with `@brief`, `@param`, and `@return` annotations.
 
