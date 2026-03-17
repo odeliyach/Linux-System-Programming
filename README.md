@@ -20,13 +20,6 @@ This repository showcases **professional systems programming skills** through tw
 ✅ **Systems Programming** - POSIX signals, fork/exec/pipe, process groups, file descriptor handling
 ✅ **Performance Engineering** - Optimized synchronization patterns, throughput benchmarking
 ✅ **Production Readiness** - CI/CD pipeline, Docker containerization, comprehensive testing strategy
-
----
-
-## ⚠️ Academic Integrity Notice
-
-**This repository is for portfolio and educational purposes only.** If you are a student currently taking an Operating Systems course, copying this code violates academic integrity policies. I do not take responsibility for disciplinary actions against individuals who misuse this code.
-
 ---
 
 ## 🚀 Quick Start
@@ -339,6 +332,11 @@ This is a portfolio project, but feedback is welcome! If you spot a bug or have 
 
 ---
 
+## ⚠️ Academic Integrity Notice
+
+**This repository is for portfolio and educational purposes only.** If you are a student currently taking an Operating Systems course, copying this code violates academic integrity policies. I do not take responsibility for disciplinary actions against individuals who misuse this code.
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
@@ -347,30 +345,9 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 ## 👤 Author
 
-**Odeliya Cohen**
+**Odeliya Chritonova**
 
 - GitHub: [@odeliyach](https://github.com/odeliyach)
-- LinkedIn: [Add your LinkedIn profile]
-- Portfolio: [Add your portfolio site]
-
----
-
-## 🏆 Why This Portfolio Stands Out
-
-### For Systems Engineering Roles
-- **Deep POSIX knowledge**: Signal handling, process groups, file descriptors
-- **Production thinking**: CI/CD, Docker, edge case testing, Valgrind verification
-- **Performance awareness**: Benchmarking, optimization patterns, throughput metrics
-
-### For Embedded/Firmware Roles
-- **Resource consciousness**: Zero leaks, explicit cleanup, minimal dependencies
-- **C11 proficiency**: Modern C without external libraries
-- **Debugging skills**: Toolchain familiarity (GDB, Valgrind, static analysis)
-
-### For Platform Engineering Roles
-- **Concurrency expertise**: Thread synchronization, lock-free patterns discussion
-- **Pragmatic design**: Clear trade-offs, simple-first approach, maintainability focus
-- **Infrastructure automation**: Build systems, containers, CI pipelines
 
 ---
 
