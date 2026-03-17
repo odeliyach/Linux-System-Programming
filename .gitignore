@@ -6,7 +6,22 @@ queue_test
 System_Programming_Projects/shell/myshell
 System_Programming_Projects/queue/queue_test
 
+# New build structure
+bin/
+build/
+*.a
+*.so
+*.dylib
+
 # OS / editor files
 .DS_Store
 *.swp
 *~
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# Temporary files
+/tmp/
