@@ -78,13 +78,12 @@ Linux-System-Programming/
 ├── tests/                        # Test suites
 │   └── queue_test.c             # Producer-consumer benchmark
 ├── System_Programming_Projects/  # Legacy structure (maintained for compatibility)
-├── docs/                         # Documentation
+├── docs/                         # Documentation (technical analysis, feedback, study plan)
 ├── .github/workflows/            # CI/CD pipeline
 │   └── ci.yml                   # Build and test automation
 ├── Makefile                      # Professional build system
 ├── Dockerfile                    # Production container
 ├── TESTING.md                    # Testing strategy and edge cases
-├── INTERVIEW_GUIDE.md            # Technical interview preparation
 └── README.md                     # This file
 ```
 
@@ -235,7 +234,7 @@ valgrind --tool=helgrind ./bin/queue_test
 4. **Memory management** (ownership rules, Valgrind verification)
 5. **Performance trade-offs** (mutex vs. lock-free, batch operations)
 
-**See [INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md)** for in-depth Q&A and behavioral interview strategies.
+**See [TECHNICAL_ANALYSIS.md](docs/TECHNICAL_ANALYSIS.md)** for in-depth Q&A and behavioral interview strategies.
 
 ---
 
@@ -283,8 +282,8 @@ USER sysuser
 
 - **[README.md](README.md)** - This file (overview, quick start, architecture)
 - **[TESTING.md](TESTING.md)** - Edge cases, test strategy, debugging guide
-- **[INTERVIEW_GUIDE.md](INTERVIEW_GUIDE.md)** - Technical Q&A, elevator pitch, behavioral prep
-- **[CV_FEEDBACK.md](CV_FEEDBACK.md)** - Technical recruiter analysis (language recommendations)
+- **[TECHNICAL_ANALYSIS.md](docs/TECHNICAL_ANALYSIS.md)** - Technical Q&A, elevator pitch, behavioral prep
+- **[CV_FEEDBACK.md](docs/CV_FEEDBACK.md)** - Technical recruiter analysis (language recommendations)
 
 All source files include Doxygen-style comments with `@brief`, `@param`, and `@return` annotations.
 
