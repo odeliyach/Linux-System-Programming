@@ -1,0 +1,31 @@
+# Git and version control
+.git
+.gitignore
+.github
+
+# Build artifacts
+bin/
+build/
+*.o
+*.out
+myshell
+queue_test
+
+# Documentation (not needed in container)
+*.md
+docs/
+LICENSE
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-*
+.DS_Store
+*.swp
+*~
+
+# CI/CD
+.github/
+
+# Temporary files
+/tmp/

@@ -1,0 +1,74 @@
+name: CI Build and Test
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc make
+
+    - name: Show build environment
+      run: |
+        gcc --version
+        make --version
+
+    - name: Build project
+      run: make clean && make all
+
+    - name: Run tests
+      run: make test
+
+    - name: Verify executables
+      run: |
+        if [ -f bin/myshell ]; then
+          echo "✓ bin/myshell exists"
+          ls -lh bin/myshell
+        elif [ -f myshell ]; then
+          echo "✓ myshell exists (legacy)"
+          ls -lh myshell
+        else
+          echo "✗ myshell not found"
+          exit 1
+        fi
+
+        if [ -f bin/queue_test ]; then
+          echo "✓ bin/queue_test exists"
+          ls -lh bin/queue_test
+        elif [ -f queue_test ]; then
+          echo "✓ queue_test exists (legacy)"
+          ls -lh queue_test
+        else
+          echo "✗ queue_test not found"
+          exit 1
+        fi
+
+  static-analysis:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install clang-format
+      run: sudo apt-get update && sudo apt-get install -y clang-format
+
+    - name: Check code formatting
+      run: |
+        # Run clang-format in check mode (don't modify files)
+        echo "Checking code formatting..."
+        find System_Programming_Projects src include tests -name "*.c" -o -name "*.h" 2>/dev/null | \
+          xargs clang-format --dry-run --Werror 2>&1 || echo "Note: Some files may not match clang-format style"
