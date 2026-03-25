@@ -1,9 +1,13 @@
-# Production-Grade Linux System Programming Portfolio
+<div align="center">
+  
+# Linux System Programming Portfolio
 
 **High-Performance C11 Systems Programming: Process Management, IPC & Concurrent Data Structures**
 
 [![CI Build and Test](https://github.com/odeliyach/Linux-System-Programming/actions/workflows/ci.yml/badge.svg)](https://github.com/odeliyach/Linux-System-Programming/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Passing](https://img.shields.io/badge/build-passing-brightgreen)
+</div>
 
 ---
 
@@ -351,6 +355,10 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 - GitHub: [@odeliyach](https://github.com/odeliyach)
 
 ---
+<div align="center">
 
-**Last Updated**: 2026-03-16
-**Build Status**: ![Passing](https://img.shields.io/badge/build-passing-brightgreen)
+Built by **Odeliya Charitonova** · [GitHub](https://github.com/odeliyach) · [LinkedIn](https://linkedin.com/in/odeliya-charitonova)
+
+*Computer Science student @ Tel Aviv University, School of CS & AI*
+
+</div>
