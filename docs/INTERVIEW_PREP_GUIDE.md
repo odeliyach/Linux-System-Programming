@@ -5,9 +5,9 @@ Copy-paste this into a Word doc and keep the headings; each section states **wha
 ---
 
 ## 30-Second Pitch (say this first)
-- **What**: “I built a minimal shell and a high-throughput thread-safe queue in C11. The shell wires pipelines with proper signal semantics; the queue hits ~400K items/sec using per-consumer condition variables.”
+- **What**: “I built a minimal shell and a high-throughput thread-safe queue in C11. The shell wires pipelines with proper signal semantics; the queue hits ~400–475K items/sec using per-consumer condition variables.”
 - **Why**: “I wanted to demonstrate production-grade systems fundamentals—process lifecycle, signals, and concurrency—without hiding behind frameworks.”
-- **How to say it**: Confident, concise, end with a number (“~400K items/sec”) and a principle (“correctness before features”).
+- **How to say it**: Confident, concise, end with a number (“~400–475K items/sec”) and a principle (“correctness before features”).
 
 ---
 
@@ -33,7 +33,7 @@ Use these bullets verbatim with recruiters. Each entry includes **What**, **Why*
   - *How*: “I treat the build as a product—strict flags, reproducible targets, and a `check` target for CI.”
 
 - **`Dockerfile`**
-  - *What*: Two-stage build; compiles/tests in `gcc:11-bullseye` (same tag as `FROM gcc:11-bullseye AS builder` in the Dockerfile) then ships minimal `debian:bullseye-slim` with non-root user.
+  - *What*: Two-stage build; compiles/tests in `gcc:11-bullseye` then ships minimal `debian:bullseye-slim` with non-root user.
   - *Why*: Guarantees toolchain parity and small runtime surface; security via non-root execution.
   - *How*: “I bake tests into the image build so bad code can’t ship, and I drop privileges in the runtime stage.”
 
@@ -183,5 +183,5 @@ Use these bullets verbatim with recruiters. Each entry includes **What**, **Why*
 ## Last-Minute Checklist Before Interview
 - Run `make check` locally (mirrors CI).
 - Skim `myshell.c` signal blocks and `queue.c` wait-path to refresh wording.
-- Keep the throughput number ready (~400–465K items/sec) and the O(1) wakeup story.
+- Keep the throughput number ready (~400–475K items/sec) and the O(1) wakeup story.
 - Prepare one improvement you’d ship next (job control or bounded queue).
