@@ -348,13 +348,6 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 
 ---
 
-## 👤 Author
-
-**Odeliya Chritonova**
-
-- GitHub: [@odeliyach](https://github.com/odeliyach)
-
----
 <div align="center">
 
 Built by **Odeliya Charitonova** · [GitHub](https://github.com/odeliyach) · [LinkedIn](https://linkedin.com/in/odeliya-charitonova)
