@@ -5,9 +5,9 @@ Copy-paste this into a Word doc and keep the headings; each section states **wha
 ---
 
 ## 30-Second Pitch (say this first)
-- **What**: “I built a minimal shell and a high-throughput thread-safe queue in C11. The shell wires pipelines with proper signal semantics; the queue hits ~400–475K items/sec using per-consumer condition variables.”
+- **What**: “I built a minimal shell and a high-throughput thread-safe queue in C11. The shell wires pipelines with proper signal semantics; the queue hits ≈420K items/sec (400–475K range) using per-consumer condition variables.”
 - **Why**: “I wanted to demonstrate production-grade systems fundamentals—process lifecycle, signals, and concurrency—without hiding behind frameworks.”
-- **How to say it**: Confident, concise, end with a number (“~400–475K items/sec”) and a principle (“correctness before features”).
+- **How to say it**: Confident, concise, end with a number (“≈420K items/sec, 400–475K range”) and a principle (“correctness before features”).
 
 ---
 
@@ -146,7 +146,7 @@ Use these bullets verbatim with recruiters. Each entry includes **What**, **Why*
 ---
 
 ## Metrics & Proof Points
-- Queue throughput: **~400–475K items/sec** on GitHub runners using the default `queue_test` settings (2 producers/2 consumers, 50 items per producer = 100 total items).
+- Queue throughput: **≈420K items/sec (observed 400–475K range)** on GitHub runners using the default `queue_test` settings (2 producers/2 consumers, 50 items per producer = 100 total items).
 - Warnings-as-errors: `-Wall -Wextra -Werror`, `-O2`.
 - Tests: `make test` (queue harness), `make check` (build + test), CI mirrors these.
 - Security: Non-root container runtime; no `system()` calls—uses `execvp` directly.
@@ -183,5 +183,5 @@ Use these bullets verbatim with recruiters. Each entry includes **What**, **Why*
 ## Last-Minute Checklist Before Interview
 - Run `make check` locally (mirrors CI).
 - Skim `myshell.c` signal blocks and `queue.c` wait-path to refresh wording.
-- Keep the throughput number ready (~400–475K items/sec) and the O(1) wakeup story.
+- Keep the throughput number ready (≈420K items/sec, 400–475K range) and the O(1) wakeup story.
 - Prepare one improvement you’d ship next (job control or bounded queue).
