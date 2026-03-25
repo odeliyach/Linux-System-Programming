@@ -33,7 +33,7 @@ Use these bullets verbatim with recruiters. Each entry includes **What**, **Why*
   - *How*: “I treat the build as a product—strict flags, reproducible targets, and a `check` target for CI.”
 
 - **`Dockerfile`**
-  - *What*: Two-stage build; compiles/tests in `gcc:11-bullseye` then ships minimal `debian:bullseye-slim` with non-root user.
+  - *What*: Two-stage build; compiles/tests in `gcc:11-bullseye` (same tag as `FROM gcc:11-bullseye AS builder` in the Dockerfile) then ships minimal `debian:bullseye-slim` with non-root user.
   - *Why*: Guarantees toolchain parity and small runtime surface; security via non-root execution.
   - *How*: “I bake tests into the image build so bad code can’t ship, and I drop privileges in the runtime stage.”
 
@@ -146,7 +146,7 @@ Use these bullets verbatim with recruiters. Each entry includes **What**, **Why*
 ---
 
 ## Metrics & Proof Points
-- Queue throughput: **~400–465K items/sec** on GitHub runners (2 producers/2 consumers, 100 items per producer = 200 total items).
+- Queue throughput: **~400–475K items/sec** on GitHub runners using the default `queue_test` settings (2 producers/2 consumers, 50 items per producer = 100 total items).
 - Warnings-as-errors: `-Wall -Wextra -Werror`, `-O2`.
 - Tests: `make test` (queue harness), `make check` (build + test), CI mirrors these.
 - Security: Non-root container runtime; no `system()` calls—uses `execvp` directly.
