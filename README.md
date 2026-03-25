@@ -4,9 +4,12 @@
 
 **High-Performance C11 Systems Programming: Process Management, IPC & Concurrent Data Structures**
 
-[![CI Build and Test](https://github.com/odeliyach/Linux-System-Programming/actions/workflows/ci.yml/badge.svg)](https://github.com/odeliyach/Linux-System-Programming/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-![Passing](https://img.shields.io/badge/build-passing-brightgreen)
+<p align="center">
+  <a href="https://github.com/odeliyach/Linux-System-Programming/actions"><img src="https://img.shields.io/github/actions/workflow/status/odeliyach/Linux-System-Programming/ci.yml?label=CI%20Build%20%26%20Test&color=BAFFC9&logo=github-actions&logoColor=white" alt="CI Build"></a>
+  <img src="https://img.shields.io/badge/Build-Passing-BAFFC9?logo=checkmarx&logoColor=white" alt="Passing">
+  <img src="https://img.shields.io/badge/Language-C-B2B2FD?logo=c&logoColor=white" alt="C">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-E2E2E2" alt="License"></a>
+</p>
 </div>
 
 ---
