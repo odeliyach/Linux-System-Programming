@@ -285,6 +285,7 @@ USER sysuser
 - **[TESTING.md](TESTING.md)** - Edge cases, test strategy, debugging guide
 - **[TECHNICAL_ANALYSIS.md](docs/TECHNICAL_ANALYSIS.md)** - Technical Q&A, elevator pitch, behavioral prep
 - **[CV_FEEDBACK.md](docs/CV_FEEDBACK.md)** - Technical recruiter analysis (language recommendations)
+- **[INTERVIEW_PREP_GUIDE.md](docs/INTERVIEW_PREP_GUIDE.md)** - Word-ready walkthrough of every file with what/why/talking points
 
 All source files include Doxygen-style comments with `@brief`, `@param`, and `@return` annotations.
 
